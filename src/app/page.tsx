@@ -1,3 +1,5 @@
+import UploadForm from '@/components/pageComponents/uploadForm';
+
 export default function Home() {
   return (
     <section className="mt-10">
@@ -5,8 +7,10 @@ export default function Home() {
       <p className="text-center">
         Analyze your construction site with a few clicks
       </p>
-      <div className="grid grid-cols-2 gap-4">
-        <div></div>
+      <div className="grid grid-cols-2 gap-4 mt-10">
+        {/* Input */}
+        <UploadForm />
+        {/* Output */}
         <div></div>
       </div>
     </section>
