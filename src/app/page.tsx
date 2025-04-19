@@ -1,4 +1,5 @@
-import UploadForm from '@/components/pageComponents/uploadForm';
+import UploadForm from './uploadForm';
+import Output from './output';
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
         {/* Input */}
         <UploadForm />
         {/* Output */}
-        <div></div>
+        <Output />
       </div>
     </section>
   );

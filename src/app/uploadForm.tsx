@@ -4,19 +4,27 @@ import React, { useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
+import { Label } from '../components/ui/label';
+import { Input } from '../components/ui/input';
 import Image from 'next/image';
-import { Card } from '../ui/card';
-import { Textarea } from '../ui/textarea';
+import { Card } from '../components/ui/card';
+import { Textarea } from '../components/ui/textarea';
+import { Button } from '../components/ui/button';
+import FormError from '../components/formError';
 
 const placeHolderMessage =
   'Enter your message here. This will be used to generate a report for the construction site.';
 
 const formSchema = z.object({
-  file: z.instanceof(File).refine((file) => file.type.startsWith('image/'), {
-    message: 'File must be an image (JPEG, PNG, etc.)',
-  }),
+  file: z
+    .instanceof(File)
+    .refine(
+      (file) =>
+        file.type.startsWith('image/') || file.type === 'application/pdf',
+      {
+        message: 'File must be an image (JPEG, PNG, etc.) or a PDF',
+      }
+    ),
   message: z.string().min(1, {
     message: 'Message is required',
   }),
@@ -36,7 +44,6 @@ function UploadForm() {
   });
 
   const {
-    control,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = form;
@@ -47,9 +54,14 @@ function UploadForm() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl);
+    console.log(file);
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const imageUrl = URL.createObjectURL(file);
+        setPreview(imageUrl);
+      } else {
+        setPreview(null);
+      }
       form.setValue('file', file);
     } else {
       setPreview(null);
@@ -60,18 +72,31 @@ function UploadForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <div>
         <Label htmlFor="file">Upload a file</Label>
-        <Input id="file" type="file" onChange={handleFileChange} />
+        <Input
+          id="file"
+          type="file"
+          onChange={handleFileChange}
+          accept="image/*,application/pdf"
+        />
         {preview && (
           <Card className="p-4 mt-3 flex justify-center items-center">
             <Image
               src={preview}
-              alt="preview of uploaded image"
+              alt={
+                preview.includes('pdf-icon')
+                  ? 'PDF document'
+                  : 'preview of uploaded image'
+              }
               width={400}
               height={800}
-              className="object-cover"
+              className="object-contain max-h-[300px]"
             />
+            {preview.includes('pdf-icon') && (
+              <p className="mt-2 text-sm text-gray-500">PDF Document</p>
+            )}
           </Card>
         )}
+        {errors.file && <FormError errorMessage={errors.file.message} />}
       </div>
       <div>
         <Label htmlFor="message">Message</Label>
@@ -80,7 +105,11 @@ function UploadForm() {
           placeholder={placeHolderMessage}
           {...form.register('message')}
         />
+        {errors.message && <FormError errorMessage={errors.message.message} />}
       </div>
+      <Button type="submit" disabled={!isValid || isSubmitting}>
+        {isSubmitting ? 'Generating...' : 'Generate'}
+      </Button>
     </form>
   );
 }
