@@ -64,15 +64,21 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
   }, [isSubmitting, setIsLoading]);
 
   const onSubmit = async (data: formData) => {
+    console.log(data);
     const userMessage: OpenAI.ChatCompletionUserMessageParam = {
       role: 'user',
       content: data.message,
     };
+
+    // First update the UI with the new message
     setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
       ...prev,
       userMessage,
     ]);
-    const response = await analyze(data.file, messages);
+
+    // Then send all messages including the new one to the API
+    const updatedMessages = [...messages, userMessage];
+    const response = await analyze(data.file, updatedMessages);
 
     if (response.content) {
       setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
@@ -82,12 +88,10 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
     }
     setIsLoading(false);
     setValue('message', '');
-    setValue('file', undefined as unknown as File);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
     if (file) {
       if (file.type.startsWith('image/')) {
         const imageUrl = URL.createObjectURL(file);
