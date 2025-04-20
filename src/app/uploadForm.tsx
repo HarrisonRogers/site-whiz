@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,9 +38,10 @@ type UploadFormProps = {
   setMessages: React.Dispatch<
     React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
   >;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function UploadForm({ messages, setMessages }: UploadFormProps) {
+function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<formData>({
@@ -56,6 +57,11 @@ function UploadForm({ messages, setMessages }: UploadFormProps) {
     setValue,
     formState: { errors, isSubmitting, isValid },
   } = form;
+
+  // set loading state to true when form is submitting
+  useEffect(() => {
+    setIsLoading(isSubmitting);
+  }, [isSubmitting, setIsLoading]);
 
   const onSubmit = async (data: formData) => {
     const userMessage: OpenAI.ChatCompletionUserMessageParam = {
@@ -74,11 +80,10 @@ function UploadForm({ messages, setMessages }: UploadFormProps) {
         { role: 'assistant', content: response.content },
       ]);
     }
+    setIsLoading(false);
     setValue('message', '');
     setValue('file', undefined as unknown as File);
   };
-
-  console.log('messages', messages);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -2,13 +2,15 @@ import { Card } from '@/components/ui/card';
 import { forwardRef } from 'react';
 import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
+import { PropagateLoader } from 'react-spinners';
 
 type OutputProps = {
   messages: OpenAI.ChatCompletionMessageParam[];
+  isLoading: boolean;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages },
+  { messages, isLoading },
   ref
 ) {
   return (
@@ -36,6 +38,14 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
         }
         return null;
       })}
+
+      {isLoading && (
+        <PropagateLoader
+          color="#000"
+          speedMultiplier={0.7}
+          className="ml-25 mt-10"
+        />
+      )}
       <div ref={ref} />
     </Card>
   );
