@@ -11,6 +11,7 @@ import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import FormError from '../components/formError';
+import { Message } from './chat';
 
 const placeHolderMessage =
   'Enter your message here. This will be used to generate a report for the construction site.';
@@ -32,7 +33,12 @@ const formSchema = z.object({
 
 type formData = z.infer<typeof formSchema>;
 
-function UploadForm() {
+type UploadFormProps = {
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+};
+
+function UploadForm({ messages, setMessages }: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<formData>({
@@ -49,7 +55,11 @@ function UploadForm() {
   } = form;
 
   const onSubmit = (data: formData) => {
-    console.log(data);
+    const userMessage: Message = {
+      role: 'user',
+      content: data.message,
+    };
+    setMessages((prev: Message[]) => [...prev, userMessage]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

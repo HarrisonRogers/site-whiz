@@ -1,5 +1,4 @@
-import UploadForm from './uploadForm';
-import Output from './output';
+import Chat from './chat';
 
 export default function Home() {
   return (
@@ -8,12 +7,7 @@ export default function Home() {
       <p className="text-center">
         Analyze your construction site with a few clicks
       </p>
-      <div className="grid grid-cols-2 gap-4 mt-10">
-        {/* Input */}
-        <UploadForm />
-        {/* Output */}
-        <Output />
-      </div>
+      <Chat />
     </section>
   );
 }
