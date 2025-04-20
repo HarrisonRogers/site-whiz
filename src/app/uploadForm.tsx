@@ -11,8 +11,8 @@ import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import FormError from '../components/formError';
-import { Message } from './chat';
-
+import analyze from '@/data/api/analyze';
+import { OpenAI } from 'openai';
 const placeHolderMessage =
   'Enter your message here. This will be used to generate a report for the construction site.';
 
@@ -34,8 +34,10 @@ const formSchema = z.object({
 type formData = z.infer<typeof formSchema>;
 
 type UploadFormProps = {
-  messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  messages: OpenAI.ChatCompletionMessageParam[];
+  setMessages: React.Dispatch<
+    React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
+  >;
 };
 
 function UploadForm({ messages, setMessages }: UploadFormProps) {
@@ -51,16 +53,32 @@ function UploadForm({ messages, setMessages }: UploadFormProps) {
 
   const {
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = form;
 
-  const onSubmit = (data: formData) => {
-    const userMessage: Message = {
+  const onSubmit = async (data: formData) => {
+    const userMessage: OpenAI.ChatCompletionUserMessageParam = {
       role: 'user',
       content: data.message,
     };
-    setMessages((prev: Message[]) => [...prev, userMessage]);
+    setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
+      ...prev,
+      userMessage,
+    ]);
+    const response = await analyze(data.file, messages);
+
+    if (response.content) {
+      setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
+        ...prev,
+        { role: 'assistant', content: response.content },
+      ]);
+    }
+    setValue('message', '');
+    setValue('file', undefined as unknown as File);
   };
+
+  console.log('messages', messages);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

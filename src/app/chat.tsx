@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Output from './output';
 import UploadForm from './uploadForm';
-
+import { OpenAI } from 'openai';
 type Role = 'user' | 'assistant';
 
 export type Message = {
@@ -12,7 +12,9 @@ export type Message = {
 };
 
 function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<OpenAI.ChatCompletionMessageParam[]>(
+    []
+  );
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
