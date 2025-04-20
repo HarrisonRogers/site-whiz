@@ -28,7 +28,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
             );
           } else if (message.role === 'user') {
             return (
-              <div key={index} className="mb-3 text-right">
+              <div key={index} className="mb-3 text-right" ref={ref}>
                 <div className="inline-block bg-gray-200 rounded-lg p-3 max-w-[70%]">
                   <Markdown>{message.content}</Markdown>
                 </div>
@@ -46,7 +46,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
           className="ml-25 mt-10"
         />
       )}
-      <div ref={ref} />
+      {/* <div ref={ref} /> */}
     </Card>
   );
 });
