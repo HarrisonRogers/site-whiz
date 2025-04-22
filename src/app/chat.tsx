@@ -23,19 +23,19 @@ function Chat() {
   });
 
   return (
-    <div className="grid grid-cols-2 gap-4 mt-10">
-      {/* Input */}
-      <UploadForm
-        messages={messages}
-        setMessages={setMessages}
-        setIsLoading={setIsLoading}
-      />
+    <div className="relative flex flex-col w-2/3 gap-4 mt-10 mx-auto">
       {/* Output */}
       <Output
         messages={messages}
         setMessages={setMessages}
         ref={messagesEndRef}
         isLoading={isLoading}
+      />
+      {/* Input */}
+      <UploadForm
+        messages={messages}
+        setMessages={setMessages}
+        setIsLoading={setIsLoading}
       />
     </div>
   );

@@ -1,4 +1,3 @@
-import { Card } from '@/components/ui/card';
 import { forwardRef } from 'react';
 import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
@@ -19,7 +18,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
   ref
 ) {
   return (
-    <Card className="min-h-[80vh] max-h-[80vh] overflow-y-auto p-4 flex flex-col">
+    <div className="min-h-[20vh] mx-auto overflow-y-auto p-4 flex flex-col">
       {/* Output */}
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
@@ -55,12 +54,12 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
         <Button
           onClick={() => setMessages([])}
           variant="default"
-          className="self-center mt-5 sticky bottom-0"
+          className="self-center mt-5 sticky top-0 left-0"
         >
           New Chat <FaEdit />
         </Button>
       )}
-    </Card>
+    </div>
   );
 });
 
