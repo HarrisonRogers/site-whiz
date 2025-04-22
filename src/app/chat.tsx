@@ -31,7 +31,12 @@ function Chat() {
         setIsLoading={setIsLoading}
       />
       {/* Output */}
-      <Output messages={messages} ref={messagesEndRef} isLoading={isLoading} />
+      <Output
+        messages={messages}
+        setMessages={setMessages}
+        ref={messagesEndRef}
+        isLoading={isLoading}
+      />
     </div>
   );
 }

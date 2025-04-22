@@ -3,18 +3,23 @@ import { forwardRef } from 'react';
 import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
 import { PropagateLoader } from 'react-spinners';
+import { Button } from '@/components/ui/button';
+import { FaEdit } from 'react-icons/fa';
 
 type OutputProps = {
+  setMessages: React.Dispatch<
+    React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
+  >;
   messages: OpenAI.ChatCompletionMessageParam[];
   isLoading: boolean;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, isLoading },
+  { messages, setMessages, isLoading },
   ref
 ) {
   return (
-    <Card className="min-h-[80vh] max-h-[80vh] overflow-y-auto p-4">
+    <Card className="min-h-[80vh] max-h-[80vh] overflow-y-auto p-4 flex flex-col">
       {/* Output */}
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
@@ -46,7 +51,15 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
           className="ml-25 mt-10"
         />
       )}
-      {/* <div ref={ref} /> */}
+      {messages.length > 1 && (
+        <Button
+          onClick={() => setMessages([])}
+          variant="default"
+          className="self-center mt-5 sticky bottom-0"
+        >
+          New Chat <FaEdit />
+        </Button>
+      )}
     </Card>
   );
 });
