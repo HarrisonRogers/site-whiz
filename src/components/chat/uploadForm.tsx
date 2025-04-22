@@ -4,16 +4,15 @@ import React, { useEffect, useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Label } from '../components/ui/label';
-import { Input } from '../components/ui/input';
+import { Label } from '../ui/label';
 import Image from 'next/image';
-import { Card } from '../components/ui/card';
-import { Textarea } from '../components/ui/textarea';
-import { Button } from '../components/ui/button';
-import FormError from '../components/formError';
+import { Card } from '../ui/card';
+import { Textarea } from '../ui/textarea';
+import { Button } from '../ui/button';
+import FormError from '../formError';
 import analyze from '@/data/api/analyze';
 import { OpenAI } from 'openai';
-import { FaPlus } from 'react-icons/fa';
+import AddImageFileButton from './addImageFileButton';
 
 const placeHolderMessage =
   'Enter your message here. This will be used to generate a report for the construction site.';
@@ -111,22 +110,7 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
     <Card className="flex flex-col gap-4 sticky bottom-10 p-4 bg-stone-200">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <Button
-            asChild
-            className="rounded-full p-3 border-black bg-transparent hover:bg-transparent"
-            variant="outline"
-          >
-            <Label>
-              <FaPlus />
-              <Input
-                className="w-full hidden"
-                id="file"
-                type="file"
-                onChange={handleFileChange}
-                accept="image/*,application/pdf"
-              />
-            </Label>
-          </Button>
+          <AddImageFileButton handleFileChange={handleFileChange} />
           {preview && (
             <Card className="p-4 mt-3 flex justify-center items-center">
               <Image

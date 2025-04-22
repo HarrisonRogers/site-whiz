@@ -1,11 +1,11 @@
 import { TooltipProvider } from './provider';
-import { Tooltip } from './root';
+import { TooltipRoot } from './root';
 import { TooltipTrigger } from './trigger';
 import { TooltipContent, type TooltipContentProps } from './content';
 
 export {
   TooltipProvider,
-  Tooltip,
+  TooltipRoot,
   TooltipTrigger,
   TooltipContent,
   type TooltipContentProps,
