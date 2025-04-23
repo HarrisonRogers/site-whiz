@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Label } from '../ui/label';
 import Image from 'next/image';
 import { Card } from '../ui/card';
 import { Textarea } from '../ui/textarea';
@@ -110,7 +109,6 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
     <Card className="flex flex-col gap-4 sticky bottom-10 p-4 bg-stone-200">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <AddImageFileButton handleFileChange={handleFileChange} />
           {preview && (
             <Card className="p-4 mt-3 flex justify-center items-center">
               <Image
@@ -129,22 +127,22 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
               )}
             </Card>
           )}
-          {errors.file && <FormError errorMessage={errors.file.message} />}
         </div>
         <div>
-          <Label htmlFor="message">Message</Label>
           <Textarea
             id="message"
             placeholder={placeHolderMessage}
             {...form.register('message')}
+            className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 resize-none min-h-10"
           />
-          {errors.message && (
-            <FormError errorMessage={errors.message.message} />
-          )}
         </div>
-        <Button type="submit" disabled={!isValid || isSubmitting}>
-          {isSubmitting ? 'Generating...' : 'Generate'}
-        </Button>
+        <div className="flex justify-between mt-3">
+          <AddImageFileButton handleFileChange={handleFileChange} />
+          <Button type="submit" disabled={!isValid || isSubmitting}>
+            {isSubmitting ? 'Generating...' : 'Generate'}
+          </Button>
+        </div>
+        {errors.file && <FormError errorMessage={errors.file.message} />}
       </form>
     </Card>
   );
