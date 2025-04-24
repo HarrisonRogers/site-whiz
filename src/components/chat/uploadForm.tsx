@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -49,6 +49,7 @@ function UploadForm({
   className,
 }: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<formData>({
     resolver: zodResolver(formSchema),
@@ -102,10 +103,15 @@ function UploadForm({
 
   const handleCloseImage = () => {
     setPreview(null);
-    form.setValue('file', undefined as unknown as File); // this is a workaround to fix the type error
+    form.setValue('file', undefined as unknown as File);
+    // Reset the file input element
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleFileChange', e.target.files);
     const file = e.target.files?.[0];
     if (file) {
       if (file.type.startsWith('image/')) {
@@ -138,7 +144,10 @@ function UploadForm({
           />
         </div>
         <div className="flex justify-between mt-3">
-          <AddImageFileButton handleFileChange={handleFileChange} />
+          <AddImageFileButton
+            handleFileChange={handleFileChange}
+            ref={fileInputRef}
+          />
           <Button type="submit" disabled={!isValid || isSubmitting}>
             {isSubmitting ? 'Generating...' : 'Generate'}
           </Button>

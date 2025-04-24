@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { FaPlus } from 'react-icons/fa';
@@ -9,7 +9,10 @@ type AddImageFileButtonProps = {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function AddImageFileButton({ handleFileChange }: AddImageFileButtonProps) {
+const AddImageFileButton = forwardRef<
+  HTMLInputElement,
+  AddImageFileButtonProps
+>(({ handleFileChange }, ref) => {
   return (
     <Tooltip toolTipContent={'Upload an image or PDF'}>
       <Button
@@ -25,11 +28,14 @@ function AddImageFileButton({ handleFileChange }: AddImageFileButtonProps) {
             type="file"
             onChange={handleFileChange}
             accept="image/*,application/pdf"
+            ref={ref}
           />
         </Label>
       </Button>
     </Tooltip>
   );
-}
+});
+
+AddImageFileButton.displayName = 'AddImageFileButton';
 
 export default AddImageFileButton;
