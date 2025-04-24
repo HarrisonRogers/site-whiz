@@ -1,7 +1,8 @@
 import React from 'react';
+import ChatPageSkeleton from '@/components/loading/chatPageSkeleton';
 
 function Loading() {
-  return <div>Loading...</div>;
+  return <ChatPageSkeleton />;
 }
 
 export default Loading;

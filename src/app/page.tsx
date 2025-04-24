@@ -1,5 +1,10 @@
-import Chat from '../components/chat/chat';
+import Link from 'next/link';
 
 export default function Home() {
-  return <Chat />;
+  return (
+    <div>
+      <h1>Home page</h1>
+      <Link href="/chat">Chat</Link>
+    </div>
+  );
 }
