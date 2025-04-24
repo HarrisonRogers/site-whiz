@@ -1,10 +1,9 @@
-import Link from 'next/link';
+import HeroSection from '@/components/pages/homePage/heroSection';
 
 export default function Home() {
   return (
-    <div>
-      <h1>Home page</h1>
-      <Link href="/chat">Chat</Link>
+    <div className="min-h-screen w-full relative overflow-hidden ">
+      <HeroSection />
     </div>
   );
 }
