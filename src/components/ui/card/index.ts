@@ -1,3 +1,3 @@
-import { Card } from './card';
+import { Card, type CardProps } from './card';
 
-export { Card };
+export { Card, type CardProps };

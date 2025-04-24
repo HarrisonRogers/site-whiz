@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
 import { Card } from '../ui/card';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
@@ -12,6 +11,8 @@ import FormError from '../formError';
 import analyze from '@/data/api/analyze';
 import { OpenAI } from 'openai';
 import AddImageFileButton from './addImageFileButton';
+import { cn } from '@/lib/utils';
+import CardImage from './cardImage';
 
 const placeHolderMessage =
   'Enter your message here. This will be used to generate a report for the construction site.';
@@ -39,9 +40,15 @@ type UploadFormProps = {
     React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
   >;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
 };
 
-function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
+function UploadForm({
+  messages,
+  setMessages,
+  setIsLoading,
+  className,
+}: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<formData>({
@@ -106,28 +113,14 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
   };
 
   return (
-    <Card className="flex flex-col gap-4 sticky bottom-10 p-4 bg-stone-200">
+    <Card
+      className={cn(
+        'flex flex-col gap-4 sticky bottom-10 p-4 bg-stone-200',
+        className
+      )}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          {preview && (
-            <Card className="p-4 mt-3 flex justify-center items-center">
-              <Image
-                src={preview}
-                alt={
-                  preview.includes('pdf-icon')
-                    ? 'PDF document'
-                    : 'preview of uploaded image'
-                }
-                width={400}
-                height={800}
-                className="object-contain max-h-[300px]"
-              />
-              {preview.includes('pdf-icon') && (
-                <p className="mt-2 text-sm text-gray-500">PDF Document</p>
-              )}
-            </Card>
-          )}
-        </div>
+        {preview && <CardImage preview={preview} />}
         <div>
           <Textarea
             id="message"
@@ -142,6 +135,7 @@ function UploadForm({ messages, setMessages, setIsLoading }: UploadFormProps) {
             {isSubmitting ? 'Generating...' : 'Generate'}
           </Button>
         </div>
+
         {errors.file && <FormError errorMessage={errors.file.message} />}
       </form>
     </Card>

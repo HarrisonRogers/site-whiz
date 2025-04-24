@@ -23,14 +23,20 @@ function Chat() {
   });
 
   return (
-    <div className="relative flex flex-col w-2/3 gap-4 mt-10 mx-auto">
+    <div className="relative flex flex-col w-2/3 gap-4 mx-auto">
+      <h1 className="text-4xl font-bold text-center mb-5">
+        Analyze your site with a few clicks
+      </h1>
+
       {/* Output */}
-      <Output
-        messages={messages}
-        setMessages={setMessages}
-        ref={messagesEndRef}
-        isLoading={isLoading}
-      />
+      {messages.length > 0 && (
+        <Output
+          messages={messages}
+          setMessages={setMessages}
+          ref={messagesEndRef}
+          isLoading={isLoading}
+        />
+      )}
       {/* Input */}
       <UploadForm
         messages={messages}

@@ -4,6 +4,7 @@ import { Markdown } from '@/lib/markdown';
 import { PropagateLoader } from 'react-spinners';
 import { Button } from '@/components/ui/button';
 import { FaEdit } from 'react-icons/fa';
+import { cn } from '@/lib/utils';
 
 type OutputProps = {
   setMessages: React.Dispatch<
@@ -11,14 +12,20 @@ type OutputProps = {
   >;
   messages: OpenAI.ChatCompletionMessageParam[];
   isLoading: boolean;
+  className?: string;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, setMessages, isLoading },
+  { messages, setMessages, isLoading, className },
   ref
 ) {
   return (
-    <div className="min-h-[20vh] mx-auto overflow-y-auto p-4 flex flex-col">
+    <div
+      className={cn(
+        'min-h-[20vh] mx-auto overflow-y-auto p-4 flex flex-col',
+        className
+      )}
+    >
       {/* Output */}
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
