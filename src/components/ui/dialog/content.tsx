@@ -2,8 +2,7 @@
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { cn } from '@/lib/utils';
-import { DialogOverlay } from './overlay';
-import { DialogPortal } from './portal';
+import { DialogOverlay, DialogPortal } from './index';
 import { X } from 'lucide-react';
 import React from 'react';
 
@@ -36,3 +35,5 @@ const DialogContent = React.forwardRef<
   </DialogPortal>
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
+
+export { DialogContent, type DialogContentProps };

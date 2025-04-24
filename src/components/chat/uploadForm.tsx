@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Card } from '../ui/card';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
-import FormError from '../formError';
 import analyze from '@/data/api/analyze';
 import { OpenAI } from 'openai';
 import AddImageFileButton from './addImageFileButton';
@@ -62,7 +61,7 @@ function UploadForm({
   const {
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting, isValid },
+    formState: { isSubmitting, isValid },
   } = form;
 
   // set loading state to true when form is submitting
@@ -71,30 +70,39 @@ function UploadForm({
   }, [isSubmitting, setIsLoading]);
 
   const onSubmit = async (data: formData) => {
-    console.log(data);
-    const userMessage: OpenAI.ChatCompletionUserMessageParam = {
-      role: 'user',
-      content: data.message,
-    };
+    try {
+      const userMessage: OpenAI.ChatCompletionUserMessageParam = {
+        role: 'user',
+        content: data.message,
+      };
 
-    // First update the UI with the new message
-    setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
-      ...prev,
-      userMessage,
-    ]);
-
-    // Then send all messages including the new one to the API
-    const updatedMessages = [...messages, userMessage];
-    const response = await analyze(data.file, updatedMessages);
-
-    if (response.content) {
+      // First update the UI with the new message
       setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
         ...prev,
-        { role: 'assistant', content: response.content },
+        userMessage,
       ]);
+
+      // Then send all messages including the new one to the API
+      const updatedMessages = [...messages, userMessage];
+      const response = await analyze(data.file, updatedMessages);
+
+      if (response.content) {
+        setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
+          ...prev,
+          { role: 'assistant', content: response.content },
+        ]);
+      }
+      setIsLoading(false);
+      setValue('message', '');
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    setValue('message', '');
+  };
+
+  const handleCloseImage = () => {
+    setPreview(null);
+    form.setValue('file', undefined as unknown as File); // this is a workaround to fix the type error
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +128,7 @@ function UploadForm({
       )}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {preview && <CardImage preview={preview} />}
+        {preview && <CardImage preview={preview} onClose={handleCloseImage} />}
         <div>
           <Textarea
             id="message"
@@ -135,8 +143,6 @@ function UploadForm({
             {isSubmitting ? 'Generating...' : 'Generate'}
           </Button>
         </div>
-
-        {errors.file && <FormError errorMessage={errors.file.message} />}
       </form>
     </Card>
   );
