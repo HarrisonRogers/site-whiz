@@ -28,8 +28,8 @@ function CardImage({ preview, onClose, ...props }: CardImageProps) {
             ? 'PDF document'
             : 'preview of uploaded image'
         }
-        width={300}
-        height={300}
+        width={1000}
+        height={1000}
         className="size-16 object-cover rounded-lg"
       />
       {preview.includes('pdf-icon') && (

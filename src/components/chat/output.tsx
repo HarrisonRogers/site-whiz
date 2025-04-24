@@ -51,17 +51,15 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
       })}
 
       {isLoading && (
-        <PropagateLoader
-          color="#000"
-          speedMultiplier={0.7}
-          className="ml-25 mt-10"
-        />
+        <div className="mb-30 ml-25 mt-10">
+          <PropagateLoader color="#000" speedMultiplier={0.7} />
+        </div>
       )}
-      {messages.length > 1 && (
+      {messages.length > 1 && !isLoading && (
         <Button
           onClick={() => setMessages([])}
           variant="default"
-          className="self-center mt-5 sticky top-0 left-0"
+          className="self-center mt-5 mb-10 sticky"
         >
           New Chat <FaEdit />
         </Button>
