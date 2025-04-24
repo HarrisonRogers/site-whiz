@@ -22,7 +22,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
   return (
     <div
       className={cn(
-        'min-h-[20vh] mx-auto overflow-y-auto p-4 flex flex-col',
+        'min-h-[20vh] mx-auto overflow-y-auto  flex flex-col',
         className
       )}
     >
@@ -32,14 +32,14 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
           if (message.role === 'assistant') {
             return (
               <div key={index} className="mb-3 text-left">
-                <div className="inline-block rounded-lg p-3 max-w-[80%]">
+                <div className="inline-block rounded-lg py-3 max-w-[80%]">
                   <Markdown>{message.content}</Markdown>
                 </div>
               </div>
             );
           } else if (message.role === 'user') {
             return (
-              <div key={index} className="mb-3 text-right" ref={ref}>
+              <div key={index} className="mb-3 mt-10 text-right" ref={ref}>
                 <div className="inline-block bg-gray-200 rounded-lg p-3 max-w-[70%]">
                   <Markdown>{message.content}</Markdown>
                 </div>
