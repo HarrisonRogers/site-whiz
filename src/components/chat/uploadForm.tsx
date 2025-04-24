@@ -12,6 +12,7 @@ import { OpenAI } from 'openai';
 import AddImageFileButton from './addImageFileButton';
 import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
+import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
 
 const placeHolderMessage =
   'Enter your message here. This will be used to generate a report for the construction site.';
@@ -50,6 +51,7 @@ function UploadForm({
 }: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const form = useForm<formData>({
     resolver: zodResolver(formSchema),
@@ -62,8 +64,12 @@ function UploadForm({
   const {
     handleSubmit,
     setValue,
+    watch,
     formState: { isSubmitting, isValid },
   } = form;
+
+  const message = watch('message');
+  useAutoResizeTextArea(textAreaRef.current, message);
 
   // set loading state to true when form is submitting
   useEffect(() => {
@@ -111,7 +117,6 @@ function UploadForm({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleFileChange', e.target.files);
     const file = e.target.files?.[0];
     if (file) {
       if (file.type.startsWith('image/')) {
@@ -139,8 +144,13 @@ function UploadForm({
           <Textarea
             id="message"
             placeholder={placeHolderMessage}
+            rows={1}
             {...form.register('message')}
-            className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 resize-none min-h-10"
+            ref={(e) => {
+              form.register('message').ref(e);
+              textAreaRef.current = e;
+            }}
+            className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 min-h-10 max-h-52 overflow-auto resize-none"
           />
         </div>
         <div className="flex justify-between mt-3">
