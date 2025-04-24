@@ -5,6 +5,7 @@ import Output from './output';
 import UploadForm from './uploadForm';
 import { OpenAI } from 'openai';
 import { cn } from '@/lib/utils';
+import HeadingTexts from '../ui/text/headingTexts';
 type Role = 'user' | 'assistant';
 
 export type Message = {
@@ -32,9 +33,10 @@ function Chat() {
     >
       <div className="relative flex flex-col w-2/3 gap-4 mx-auto">
         {messages.length === 0 && (
-          <h1 className="text-4xl font-bold text-center mb-5">
-            Analyze your site with a few clicks
-          </h1>
+          <HeadingTexts
+            text="How can I help you today?"
+            className="text-center text-base md:text-4xl"
+          />
         )}
 
         {/* Output */}

@@ -134,7 +134,7 @@ function UploadForm({
   return (
     <Card
       className={cn(
-        'flex flex-col gap-4 sticky bottom-10 p-4 bg-stone-200',
+        'flex flex-col w-2/3 self-center gap-4 sticky bottom-10 p-4 bg-stone-200',
         className
       )}
     >

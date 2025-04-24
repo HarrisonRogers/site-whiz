@@ -5,19 +5,18 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Cards from './cards';
 import { motion } from 'motion/react';
+import HeadingTexts from '@/components/ui/text/headingTexts';
 
 const HeroSection = () => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="min-h-[80vh] w-full flex flex-col items-center justify-center px-4 overflow-visible"
+      transition={{ duration: 0.8 }}
+      className="min-h-[80vh] w-full flex flex-col items-center justify-center h-screen px-4 overflow-visible"
     >
       <div className="space-y-8 text-center max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-500 leading-tight ">
-          Analyze your building needs
-        </h1>
+        <HeadingTexts text="Analyze your building needs" />
         <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Analyze architectural drawings, construction plans, and design
           sketches with advanced AI technology. Get instant insights and
