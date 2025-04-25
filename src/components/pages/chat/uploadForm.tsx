@@ -14,22 +14,16 @@ import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
 import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
 
-const placeHolderMessage =
-  'Enter your message here. This will be used to generate a report for the construction site.';
-
 const formSchema = z.object({
   file: z
     .instanceof(File)
     .refine(
-      (file) =>
-        file.type.startsWith('image/') || file.type === 'application/pdf',
-      {
-        message: 'File must be an image (JPEG, PNG, etc.) or a PDF',
-      }
+      (f): f is File =>
+        f instanceof File &&
+        (f.type.startsWith('image/') || f.type === 'application/pdf'),
+      { message: 'File must be an image (JPEG, PNG, etc.) or a PDF' }
     ),
-  message: z.string().min(1, {
-    message: 'Message is required',
-  }),
+  message: z.string().optional(),
 });
 
 type formData = z.infer<typeof formSchema>;
@@ -69,7 +63,7 @@ function UploadForm({
   } = form;
 
   const message = watch('message');
-  useAutoResizeTextArea(textAreaRef.current, message);
+  useAutoResizeTextArea(textAreaRef.current, message || '');
 
   // set loading state to true when form is submitting
   useEffect(() => {
@@ -80,7 +74,7 @@ function UploadForm({
     try {
       const userMessage: OpenAI.ChatCompletionUserMessageParam = {
         role: 'user',
-        content: data.message,
+        content: data.message || '',
       };
 
       // First update the UI with the new message
@@ -134,7 +128,7 @@ function UploadForm({
   return (
     <Card
       className={cn(
-        'flex flex-col w-2/3 self-center gap-4 sticky bottom-10 p-4 bg-stone-200',
+        'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-10 p-4 bg-stone-200',
         className
       )}
     >
@@ -143,18 +137,19 @@ function UploadForm({
         <div>
           <Textarea
             id="message"
-            placeholder={placeHolderMessage}
+            placeholder="Enter your message here..."
             rows={1}
             {...form.register('message')}
             ref={(e) => {
               form.register('message').ref(e);
               textAreaRef.current = e;
             }}
-            className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 min-h-10 max-h-52 overflow-auto resize-none"
+            className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none"
           />
         </div>
         <div className="flex justify-between mt-3">
           <AddImageFileButton
+            register={form.register}
             handleFileChange={handleFileChange}
             ref={fileInputRef}
           />

@@ -13,7 +13,7 @@ import {
 import Link from 'next/link';
 import Separator from '@/components/ui/separator';
 
-// Menu items.
+// Menu items
 const items = [
   {
     title: 'Home',

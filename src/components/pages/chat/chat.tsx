@@ -28,10 +28,10 @@ function Chat() {
     <section
       className={cn(
         'flex flex-col items-center justify-center',
-        messages.length <= 0 ? 'h-screen' : ''
+        messages.length <= 0 ? 'h-[90vh]' : ''
       )}
     >
-      <div className="relative flex flex-col w-2/3 gap-4 mx-auto">
+      <div className="relative flex flex-col w-full px-3 md:w-2/3 gap-4 mx-auto">
         {messages.length === 0 && (
           <HeadingTexts
             text="How can I help you today?"

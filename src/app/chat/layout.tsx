@@ -9,7 +9,7 @@ function ChatLayout({ children }: { children: React.ReactNode }) {
       <SidebarProvider>
         <ChatSidebar />
         <section className="w-full">
-          <SidebarTrigger />
+          <SidebarTrigger className="sticky top-0 left-4" />
           {children}
         </section>
       </SidebarProvider>

@@ -4,15 +4,16 @@ import { Button } from '../../ui/button';
 import { FaPlus } from 'react-icons/fa';
 import { Input } from '../../ui/input';
 import Tooltip from '../../ui/tooltip/tooltip';
-
+import { UseFormRegister } from 'react-hook-form';
 type AddImageFileButtonProps = {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  register: UseFormRegister<{ file: File; message?: string | undefined }>;
 };
 
 const AddImageFileButton = forwardRef<
   HTMLInputElement,
   AddImageFileButtonProps
->(({ handleFileChange }, ref) => {
+>(({ handleFileChange, register }, ref) => {
   return (
     <Tooltip toolTipContent={'Upload an image or PDF'}>
       <Button
@@ -26,6 +27,7 @@ const AddImageFileButton = forwardRef<
             className="w-full hidden"
             id="file"
             type="file"
+            {...register('file')}
             onChange={handleFileChange}
             accept="image/*,application/pdf"
             ref={ref}
