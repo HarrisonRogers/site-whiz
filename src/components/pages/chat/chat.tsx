@@ -5,7 +5,7 @@ import Output from './output';
 import UploadForm from './uploadForm';
 import { OpenAI } from 'openai';
 import { cn } from '@/lib/utils';
-import HeadingTexts from '../ui/text/headingTexts';
+import HeadingTexts from '../../ui/text/headingTexts';
 type Role = 'user' | 'assistant';
 
 export type Message = {

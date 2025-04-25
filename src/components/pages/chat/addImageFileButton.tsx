@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
-import { Label } from '../ui/label';
-import { Button } from '../ui/button';
+import { Label } from '../../ui/label';
+import { Button } from '../../ui/button';
 import { FaPlus } from 'react-icons/fa';
-import { Input } from '../ui/input';
-import Tooltip from '../ui/tooltip/tooltip';
+import { Input } from '../../ui/input';
+import Tooltip from '../../ui/tooltip/tooltip';
 
 type AddImageFileButtonProps = {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

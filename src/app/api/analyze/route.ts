@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { SYSTEM_MESSAGE } from '@/lib/system-message';
-import { Message } from '@/components/chat/chat';
+import { Message } from '@/components/pages/chat/chat';
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
