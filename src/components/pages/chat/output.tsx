@@ -21,10 +21,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
 ) {
   return (
     <div
-      className={cn(
-        'min-h-[20vh] mx-auto overflow-y-auto  flex flex-col',
-        className
-      )}
+      className={cn('min-h-[20vh] overflow-y-auto flex flex-col', className)}
     >
       {/* Output */}
       {messages.map((message, index) => {
@@ -39,7 +36,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
             );
           } else if (message.role === 'user') {
             return (
-              <div key={index} className="mb-3 mt-10 float-right" ref={ref}>
+              <div key={index} className="mb-3 mt-10 text-right" ref={ref}>
                 <div className="inline-block bg-gray-200 rounded-lg p-3 max-w-[70%]">
                   <Markdown>{message.content}</Markdown>
                 </div>

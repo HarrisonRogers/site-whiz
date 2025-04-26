@@ -13,6 +13,7 @@ import AddImageFileButton from './addImageFileButton';
 import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
 import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
+import chat from '@/data/api/chat';
 
 const formSchema = z.object({
   file: z
@@ -22,8 +23,9 @@ const formSchema = z.object({
         f instanceof File &&
         (f.type.startsWith('image/') || f.type === 'application/pdf'),
       { message: 'File must be an image (JPEG, PNG, etc.) or a PDF' }
-    ),
-  message: z.string().optional(),
+    )
+    .optional(),
+  message: z.string().min(1, { message: 'Message is required' }),
 });
 
 type formData = z.infer<typeof formSchema>;
@@ -83,9 +85,10 @@ function UploadForm({
         userMessage,
       ]);
 
-      // Then send all messages including the new one to the API
       const updatedMessages = [...messages, userMessage];
-      const response = await analyze(data.file, updatedMessages);
+      const response = data.file
+        ? await analyze(data.file || undefined, updatedMessages)
+        : await chat(updatedMessages);
 
       if (response.content) {
         setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [

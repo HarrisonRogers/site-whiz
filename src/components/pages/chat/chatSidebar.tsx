@@ -12,7 +12,6 @@ import {
 import Link from 'next/link';
 import Separator from '@/components/ui/separator';
 import Logo from '@/components/logo';
-import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/theme/themeToggle';
 import Tooltip from '@/components/ui/tooltip/tooltip';
 
@@ -56,13 +55,7 @@ export default function ChatSidebar() {
             <div>
               <ThemeToggle />
               <Tooltip toolTipContent="New chat">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hover:bg-transparent"
-                >
-                  <SquarePen />
-                </Button>
+                <SquarePen className="size-4 cursor-pointer" />
               </Tooltip>
             </div>
           </SidebarGroupLabel>

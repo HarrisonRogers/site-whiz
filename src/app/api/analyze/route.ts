@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { SYSTEM_MESSAGE } from '@/lib/system-message';
 import { Message } from '@/components/pages/chat/chat';
-
-const openai = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-});
+import { openAiKey } from '@/lib/openAiKey';
 
 export async function POST(req: NextRequest) {
   const { imageFile, messages } = await req.json();
@@ -59,7 +56,7 @@ export async function POST(req: NextRequest) {
     conversationMessages.push(lastMessage);
   }
 
-  const response = await openai.chat.completions.create({
+  const response = await openAiKey.chat.completions.create({
     model: 'gpt-4.1-mini',
     messages: conversationMessages,
     max_tokens: 1000,

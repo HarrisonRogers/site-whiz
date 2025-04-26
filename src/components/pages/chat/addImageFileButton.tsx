@@ -5,9 +5,13 @@ import { FaPlus } from 'react-icons/fa';
 import { Input } from '../../ui/input';
 import Tooltip from '../../ui/tooltip/tooltip';
 import { UseFormRegister } from 'react-hook-form';
+
 type AddImageFileButtonProps = {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  register: UseFormRegister<{ file: File; message?: string | undefined }>;
+  register: UseFormRegister<{
+    file?: File;
+    message: string;
+  }>;
 };
 
 const AddImageFileButton = forwardRef<
