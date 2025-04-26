@@ -129,7 +129,7 @@ function UploadForm({
     <>
       <Card
         className={cn(
-          'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-10 p-4 bg-stone-200',
+          'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-10 p-4 ',
           className
         )}
       >
@@ -147,7 +147,7 @@ function UploadForm({
                 form.register('message').ref(e);
                 textAreaRef.current = e;
               }}
-              className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none px-0"
+              className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 border-none min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none px-0"
             />
           </div>
           <div className="flex justify-between mt-3">

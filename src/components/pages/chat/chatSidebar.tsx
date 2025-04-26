@@ -11,8 +11,7 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import Separator from '@/components/ui/separator';
-import Image from 'next/image';
-import Logo from '../../../../public/logo.svg';
+import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/theme/themeToggle';
 
@@ -32,7 +31,7 @@ export default function ChatSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="text-2xl flex items-center justify-between">
             <Link href="/">
-              <Image src={Logo} alt="Site Whiz logo" width={32} height={32} />
+              <Logo className="size-8" />
             </Link>
             <div>
               <ThemeToggle />
