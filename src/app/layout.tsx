@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Quicksand } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,11 +31,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${quicksand.variable} antialiased container min-w-full mx-auto bg-radial-[at_center_50%] from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-800 font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${quicksand.variable} antialiased container min-w-full   mx-auto bg-radial-[at_center_50%] from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-800 font-sans bg-gray-200 dark:bg-gray-800 min-h-screen`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

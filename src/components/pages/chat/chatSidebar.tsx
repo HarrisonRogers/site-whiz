@@ -14,6 +14,7 @@ import Separator from '@/components/ui/separator';
 import Image from 'next/image';
 import Logo from '../../../../public/logo.svg';
 import { Button } from '@/components/ui/button';
+import ThemeToggle from '@/components/theme/themeToggle';
 
 // Menu items
 const items = [
@@ -33,13 +34,16 @@ export default function ChatSidebar() {
             <Link href="/">
               <Image src={Logo} alt="Site Whiz logo" width={32} height={32} />
             </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-transparent"
-            >
-              <SquarePen />
-            </Button>
+            <div>
+              <ThemeToggle />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-transparent"
+              >
+                <SquarePen />
+              </Button>
+            </div>
           </SidebarGroupLabel>
           <Separator className="mt-2 mb-4" />
           <SidebarGroupContent>

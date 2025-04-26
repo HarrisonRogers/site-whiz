@@ -25,7 +25,7 @@ const HeroSection = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button
-            className="hover:opacity-90 transition-all duration-200 text-white px-8 py-6 rounded-lg text-lg group w-full sm:w-auto"
+            className="hover:opacity-90 transition-all duration-200  px-8 py-6 rounded-lg text-lg group w-full sm:w-auto"
             asChild
           >
             <Link href="/chat">
