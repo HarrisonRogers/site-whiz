@@ -11,6 +11,7 @@ function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
+      className="hover:bg-transparent"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
     >
       {theme === 'dark' ? <Moon /> : <Sun />}

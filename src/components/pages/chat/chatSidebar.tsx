@@ -1,4 +1,4 @@
-import { Home, SquarePen } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -14,20 +14,40 @@ import Separator from '@/components/ui/separator';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/theme/themeToggle';
+import Tooltip from '@/components/ui/tooltip/tooltip';
 
 // Menu items
 const items = [
   {
-    title: 'Home',
+    title: 'New chat',
     url: '/',
-    icon: Home,
+  },
+  {
+    title: 'Chats',
+    url: '/',
+  },
+  {
+    title: 'Settings',
+    url: '/',
+  },
+  {
+    title: 'Help',
+    url: '/',
+  },
+  {
+    title: 'About',
+    url: '/',
+  },
+  {
+    title: 'Logout',
+    url: '/',
   },
 ];
 
 export default function ChatSidebar() {
   return (
     <Sidebar>
-      <SidebarContent className="bg-gray-100 dark:bg-gray-900">
+      <SidebarContent className="bg-gray-100 dark:bg-neutral-900">
         <SidebarGroup>
           <SidebarGroupLabel className="text-2xl flex items-center justify-between">
             <Link href="/">
@@ -35,13 +55,15 @@ export default function ChatSidebar() {
             </Link>
             <div>
               <ThemeToggle />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hover:bg-transparent"
-              >
-                <SquarePen />
-              </Button>
+              <Tooltip toolTipContent="New chat">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-transparent"
+                >
+                  <SquarePen />
+                </Button>
+              </Tooltip>
             </div>
           </SidebarGroupLabel>
           <Separator className="mt-2 mb-4" />
@@ -52,7 +74,6 @@ export default function ChatSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
-                      <item.icon />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

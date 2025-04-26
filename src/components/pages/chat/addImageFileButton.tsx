@@ -18,7 +18,7 @@ const AddImageFileButton = forwardRef<
     <Tooltip toolTipContent={'Upload an image or PDF'}>
       <Button
         asChild
-        className="rounded-full p-3 border-black bg-transparent hover:bg-transparent"
+        className="rounded-full p-3 dark:border-neutral-300 border-neutral-700 bg-transparent hover:bg-transparent"
         variant="outline"
       >
         <Label>
