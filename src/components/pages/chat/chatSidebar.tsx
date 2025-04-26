@@ -41,8 +41,8 @@ export default function ChatSidebar() {
               <SquarePen />
             </Button>
           </SidebarGroupLabel>
-          <Separator />
-          <SidebarGroupContent className="mt-4">
+          <Separator className="mt-2 mb-4" />
+          <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem></SidebarMenuItem>
               {items.map((item) => (
