@@ -12,5 +12,9 @@ export default async function analyze(
     body: JSON.stringify({ imageFile: base64Image, messages }),
   });
 
+  if (!response.ok) {
+    throw new Error('Failed to analyze image');
+  }
+
   return response.json();
 }
