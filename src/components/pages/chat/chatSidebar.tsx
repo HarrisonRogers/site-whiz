@@ -69,9 +69,11 @@ export default function ChatSidebar() {
           <Separator className="mt-2 mb-4" />
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem></SidebarMenuItem>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem
+                  key={item.title}
+                  className="hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200"
+                >
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
                       <span>{item.title}</span>
