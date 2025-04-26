@@ -25,7 +25,7 @@ const items = [
 export default function ChatSidebar() {
   return (
     <Sidebar>
-      <SidebarContent>
+      <SidebarContent className="bg-gray-100 dark:bg-gray-900">
         <SidebarGroup>
           <SidebarGroupLabel className="text-2xl">Site Whiz</SidebarGroupLabel>
           <Separator />

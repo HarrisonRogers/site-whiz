@@ -31,7 +31,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
         if (typeof message.content === 'string') {
           if (message.role === 'assistant') {
             return (
-              <div key={index} className="mb-3 text-left">
+              <div key={index} className="mb-3 self-start">
                 <div className="inline-block rounded-lg py-3 max-w-[80%]">
                   <Markdown>{message.content}</Markdown>
                 </div>
@@ -39,7 +39,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
             );
           } else if (message.role === 'user') {
             return (
-              <div key={index} className="mb-3 mt-10 text-right" ref={ref}>
+              <div key={index} className="mb-3 mt-10 self-end" ref={ref}>
                 <div className="inline-block bg-gray-200 rounded-lg p-3 max-w-[70%]">
                   <Markdown>{message.content}</Markdown>
                 </div>

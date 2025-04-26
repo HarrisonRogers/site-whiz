@@ -26,14 +26,7 @@ const Card = ({
         className
       )}
     >
-      <h3
-        className={cn(
-          'text-xl font-semibold mb-2 text-blue-600 dark:text-blue-400',
-          h3ClassName
-        )}
-      >
-        {title}
-      </h3>
+      <h3 className={cn('text-xl font-semibold mb-2', h3ClassName)}>{title}</h3>
       <p className={cn('text-gray-600 dark:text-gray-300', pClassName)}>
         {description}
       </p>
@@ -47,7 +40,7 @@ function Cards() {
       <Card
         title={
           <div className="flex items-center gap-2">
-            <FaHouse className="text-blue-600 dark:text-blue-400" />
+            <FaHouse />
             Building Plans
           </div>
         }
@@ -56,7 +49,7 @@ function Cards() {
       <Card
         title={
           <div className="flex items-center gap-2">
-            <FaPencilAlt className="text-blue-600 dark:text-blue-400" />
+            <FaPencilAlt />
             Design Drawings
           </div>
         }
@@ -65,7 +58,7 @@ function Cards() {
       <Card
         title={
           <div className="flex items-center gap-2">
-            <MdEngineering className="text-blue-600 dark:text-blue-400" />
+            <MdEngineering />
             Technical Specs
           </div>
         }
