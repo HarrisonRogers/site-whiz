@@ -2,21 +2,17 @@ import { forwardRef } from 'react';
 import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
 import { PropagateLoader } from 'react-spinners';
-import { Button } from '@/components/ui/button';
-import { FaEdit } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 
 type OutputProps = {
-  setMessages: React.Dispatch<
-    React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
-  >;
   messages: OpenAI.ChatCompletionMessageParam[];
   isLoading: boolean;
   className?: string;
+  theme?: string;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, setMessages, isLoading, className },
+  { messages, isLoading, className, theme },
   ref
 ) {
   return (
@@ -37,7 +33,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
           } else if (message.role === 'user') {
             return (
               <div key={index} className="mb-3 mt-10 text-right" ref={ref}>
-                <div className="inline-block bg-gray-200 rounded-lg p-3 max-w-[70%]">
+                <div className="inline-block rounded-lg p-3 max-w-[70%] bg-neutral-200 dark:bg-neutral-700">
                   <Markdown>{message.content}</Markdown>
                 </div>
               </div>
@@ -49,17 +45,11 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
 
       {isLoading && (
         <div className="mb-30 ml-25 mt-10">
-          <PropagateLoader color="#000" speedMultiplier={0.7} />
+          <PropagateLoader
+            color={theme === 'dark' ? '#fff' : '#000'}
+            speedMultiplier={0.7}
+          />
         </div>
-      )}
-      {messages.length > 1 && !isLoading && (
-        <Button
-          onClick={() => setMessages([])}
-          variant="default"
-          className="self-center mt-5 mb-10 sticky"
-        >
-          New Chat <FaEdit />
-        </Button>
       )}
     </div>
   );

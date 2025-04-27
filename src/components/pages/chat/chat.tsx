@@ -5,6 +5,7 @@ import Output from './output';
 import UploadForm from './uploadForm';
 import { OpenAI } from 'openai';
 import { cn } from '@/lib/utils';
+import { useTheme } from 'next-themes';
 type Role = 'user' | 'assistant';
 
 export type Message = {
@@ -13,6 +14,7 @@ export type Message = {
 };
 
 function Chat() {
+  const { theme } = useTheme();
   const [messages, setMessages] = useState<OpenAI.ChatCompletionMessageParam[]>(
     []
   );
@@ -26,8 +28,8 @@ function Chat() {
   return (
     <section
       className={cn(
-        'flex flex-col items-center justify-center',
-        messages.length <= 0 ? 'h-[90vh]' : ''
+        'flex flex-col items-center justify-center h-[90vh]',
+        messages.length > 0 && 'items-start justify-start'
       )}
     >
       <div className="relative flex flex-col w-full px-3 md:w-2/3 gap-4 mx-auto">
@@ -41,9 +43,9 @@ function Chat() {
         {messages.length > 0 && (
           <Output
             messages={messages}
-            setMessages={setMessages}
             ref={messagesEndRef}
             isLoading={isLoading}
+            theme={theme}
           />
         )}
         {/* Input */}
@@ -51,6 +53,7 @@ function Chat() {
           messages={messages}
           setMessages={setMessages}
           setIsLoading={setIsLoading}
+          isLoading={isLoading}
         />
       </div>
     </section>

@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
 import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
 import chat from '@/data/api/chat';
+import { FaEdit } from 'react-icons/fa';
 
 const formSchema = z.object({
   file: z
@@ -37,6 +38,7 @@ type UploadFormProps = {
   >;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
+  isLoading: boolean;
 };
 
 function UploadForm({
@@ -44,6 +46,7 @@ function UploadForm({
   setMessages,
   setIsLoading,
   className,
+  isLoading,
 }: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -129,7 +132,22 @@ function UploadForm({
   };
 
   return (
-    <>
+    <div
+      className={cn(
+        'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-0 p-4 ',
+        className
+      )}
+    >
+      {messages.length > 1 && !isLoading && (
+        <Button
+          onClick={() => setMessages([])}
+          variant="default"
+          className="self-center mt-5 mb-0 sticky"
+        >
+          New Chat <FaEdit />
+        </Button>
+      )}
+
       <Card
         className={cn(
           'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-10 p-4 ',
@@ -169,7 +187,7 @@ function UploadForm({
         Sometimes Whiz may get it wrong. If you have any feedback, please let me
         know.
       </small>
-    </>
+    </div>
   );
 }
 
