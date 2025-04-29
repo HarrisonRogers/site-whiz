@@ -8,16 +8,20 @@ type OutputProps = {
   messages: OpenAI.ChatCompletionMessageParam[];
   isLoading: boolean;
   className?: string;
+  errorMessage: string;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, isLoading, className },
+  { messages, isLoading, className, errorMessage },
   ref
 ) {
   return (
     <div
       className={cn('min-h-[20vh] overflow-y-auto flex flex-col', className)}
     >
+      <div className="mb-30 ml-25 mt-10 text-left">
+        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+      </div>
       {/* Output */}
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {

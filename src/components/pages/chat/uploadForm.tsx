@@ -37,6 +37,7 @@ type UploadFormProps = {
     React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
   >;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
   isLoading: boolean;
 };
@@ -45,6 +46,7 @@ function UploadForm({
   messages,
   setMessages,
   setIsLoading,
+  setErrorMessage,
   className,
   isLoading,
 }: UploadFormProps) {
@@ -103,6 +105,11 @@ function UploadForm({
       setValue('message', '');
     } catch (error) {
       console.error(error);
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'An error occurred, Please try again later'
+      );
       setIsLoading(false);
     }
   };

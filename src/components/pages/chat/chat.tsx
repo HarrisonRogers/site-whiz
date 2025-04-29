@@ -17,6 +17,7 @@ function Chat() {
     []
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function Chat() {
             messages={messages}
             ref={messagesEndRef}
             isLoading={isLoading}
+            errorMessage={errorMessage}
           />
         )}
         {/* Input */}
@@ -51,6 +53,7 @@ function Chat() {
           setMessages={setMessages}
           setIsLoading={setIsLoading}
           isLoading={isLoading}
+          setErrorMessage={setErrorMessage}
         />
       </div>
     </section>

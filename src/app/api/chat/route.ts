@@ -4,6 +4,8 @@ import { SYSTEM_MESSAGE } from '@/lib/system-message';
 import { Message } from '@/components/pages/chat/chat';
 import { openAiKey } from '@/lib/openAiKey';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   const { messages } = await req.json();
 
