@@ -4,6 +4,8 @@ import { SYSTEM_MESSAGE } from '@/lib/system-message';
 import { Message } from '@/components/pages/chat/chat';
 import { openAiKey } from '@/lib/openAiKey';
 
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   const { imageFile, messages } = await req.json();
 
