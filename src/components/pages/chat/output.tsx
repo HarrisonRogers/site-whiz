@@ -1,18 +1,17 @@
 import { forwardRef } from 'react';
 import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
-import { PropagateLoader } from 'react-spinners';
 import { cn } from '@/lib/utils';
+import Spinner from '@/components/ui/spinner/spinner';
 
 type OutputProps = {
   messages: OpenAI.ChatCompletionMessageParam[];
   isLoading: boolean;
   className?: string;
-  theme?: string;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, isLoading, className, theme },
+  { messages, isLoading, className },
   ref
 ) {
   return (
@@ -45,10 +44,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
 
       {isLoading && (
         <div className="mb-30 ml-25 mt-10">
-          <PropagateLoader
-            color={theme === 'dark' ? '#fff' : '#000'}
-            speedMultiplier={0.7}
-          />
+          <Spinner />
         </div>
       )}
     </div>

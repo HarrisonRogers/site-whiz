@@ -5,7 +5,6 @@ import Output from './output';
 import UploadForm from './uploadForm';
 import { OpenAI } from 'openai';
 import { cn } from '@/lib/utils';
-import { useTheme } from 'next-themes';
 type Role = 'user' | 'assistant';
 
 export type Message = {
@@ -14,7 +13,6 @@ export type Message = {
 };
 
 function Chat() {
-  const { theme } = useTheme();
   const [messages, setMessages] = useState<OpenAI.ChatCompletionMessageParam[]>(
     []
   );
@@ -45,7 +43,6 @@ function Chat() {
             messages={messages}
             ref={messagesEndRef}
             isLoading={isLoading}
-            theme={theme}
           />
         )}
         {/* Input */}
