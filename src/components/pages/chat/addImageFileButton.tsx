@@ -33,7 +33,7 @@ const AddImageFileButton = forwardRef<
             type="file"
             {...register('file')}
             onChange={handleFileChange}
-            accept="image/*,application/pdf"
+            accept="image/png, image/jpeg"
             ref={ref}
           />
         </Label>
