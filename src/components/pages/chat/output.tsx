@@ -1,28 +1,19 @@
-import { forwardRef } from 'react';
-import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
 import { cn } from '@/lib/utils';
-import Spinner from '@/components/ui/spinner/spinner';
+import { UIMessage } from 'ai';
+import LoadingText from '@/components/ui/loading/text';
 
 type OutputProps = {
-  messages: OpenAI.ChatCompletionMessageParam[];
+  messages: UIMessage[];
   isLoading: boolean;
   className?: string;
-  errorMessage: string;
 };
 
-const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, isLoading, className, errorMessage },
-  ref
-) {
+const Output = ({ messages, isLoading, className }: OutputProps) => {
   return (
     <div
       className={cn('min-h-[20vh] overflow-y-auto flex flex-col', className)}
     >
-      <div className="mb-30 ml-25 mt-10 text-left">
-        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-      </div>
-      {/* Output */}
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
           if (message.role === 'assistant') {
@@ -35,7 +26,7 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
             );
           } else if (message.role === 'user') {
             return (
-              <div key={index} className="mb-3 mt-10 text-right" ref={ref}>
+              <div key={index} className="mb-3 mt-10 text-right">
                 <div className="inline-block rounded-lg p-3 max-w-[70%] bg-neutral-200 dark:bg-neutral-700">
                   <Markdown>{message.content}</Markdown>
                 </div>
@@ -47,12 +38,12 @@ const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
       })}
 
       {isLoading && (
-        <div className="mb-30 ml-25 mt-10">
-          <Spinner />
+        <div className="mb-30 mt-10">
+          <LoadingText />
         </div>
       )}
     </div>
   );
-});
+};
 
 export default Output;
