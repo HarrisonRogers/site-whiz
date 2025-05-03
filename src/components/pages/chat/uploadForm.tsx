@@ -145,6 +145,7 @@ function UploadForm({
           </div>
           <div className="flex justify-between mt-3">
             <AddImageFileButton
+              disabled={(imageFile && imageFile.length > 0) || false}
               handleFileChange={(event) => {
                 const files = event.target.files;
 

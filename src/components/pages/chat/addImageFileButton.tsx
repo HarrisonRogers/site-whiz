@@ -4,25 +4,35 @@ import { Button } from '../../ui/button';
 import { FaPlus } from 'react-icons/fa';
 import { Input } from '../../ui/input';
 import Tooltip from '../../ui/tooltip/tooltip';
+import { cn } from '@/lib/utils';
 
 type AddImageFileButtonProps = {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled: boolean;
 };
 
 const AddImageFileButton = forwardRef<
   HTMLInputElement,
   AddImageFileButtonProps
->(({ handleFileChange }, ref) => {
+>(({ handleFileChange, disabled }, ref) => {
   return (
-    <Tooltip toolTipContent={'Upload an image or PDF'}>
+    <Tooltip
+      toolTipContent={
+        disabled ? 'Only one image at a time' : 'Upload an image or PDF'
+      }
+    >
       <Button
         asChild
-        className="rounded-full p-3 dark:border-neutral-300 border-neutral-700 bg-transparent hover:bg-transparent"
+        className={cn(
+          'rounded-full p-3 dark:border-neutral-300 border-neutral-700 bg-transparent hover:bg-transparent',
+          disabled && 'opacity-50 hover:cursor-not-allowed'
+        )}
         variant="outline"
       >
         <Label>
           <FaPlus />
           <Input
+            disabled={disabled}
             className="w-full hidden"
             id="file"
             type="file"
