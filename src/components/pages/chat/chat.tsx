@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Output from './output';
 import UploadForm from './uploadForm';
 import { cn } from '@/lib/utils';
@@ -17,13 +17,6 @@ function Chat() {
   const [messages, setMessages] = useState<UIMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  });
-
-  console.log(messages);
 
   return (
     <section
@@ -41,11 +34,7 @@ function Chat() {
 
         {/* Output */}
         {messages.length > 0 && (
-          <Output
-            messages={messages}
-            ref={messagesEndRef}
-            isLoading={isLoading}
-          />
+          <Output messages={messages} isLoading={isLoading} />
         )}
         {errorMessage && <div className="text-red-500">{errorMessage}</div>}
         {/* Input */}

@@ -37,8 +37,8 @@ function UploadForm({
     input,
     handleInputChange,
     handleSubmit,
+    status,
     setMessages: setChatMessages,
-    isLoading: chatIsLoading,
   } = useChat({
     api: '/api/vercel-chat',
     initialMessages,
@@ -52,7 +52,6 @@ function UploadForm({
       setIsLoading(false);
     },
     onFinish: () => {
-      setIsLoading(false);
       setImageFile(undefined);
       setPreview(null);
       if (fileInputRef.current) {
@@ -61,10 +60,21 @@ function UploadForm({
     },
   });
 
+  const loading = status === 'submitted' || status === 'streaming';
+
   useEffect(() => {
     // Update the parent component's messages state when local messages change
     setMessages(messages);
   }, [messages, setMessages]);
+
+  useEffect(() => {
+    // Update loading state based on status
+    if (status === 'submitted') {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [status, setIsLoading]);
 
   // Use auto-resize for textarea
   useAutoResizeTextArea(textAreaRef.current, input || '');
@@ -80,7 +90,9 @@ function UploadForm({
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(chatIsLoading);
+
+    // Set loading state to true before submitting
+    setIsLoading(true);
 
     // Create a new FileList-like structure if we have an image
     if (imageFile) {
@@ -99,7 +111,7 @@ function UploadForm({
         className
       )}
     >
-      {messages.length > 1 && !chatIsLoading && (
+      {messages.length > 2 && (
         <Button
           onClick={() => {
             setChatMessages([]);
@@ -145,8 +157,8 @@ function UploadForm({
               }}
               ref={fileInputRef}
             />
-            <Button type="submit" disabled={chatIsLoading}>
-              {chatIsLoading ? 'Generating...' : 'Generate'}
+            <Button type="submit" disabled={loading}>
+              {loading ? 'Generating...' : 'Generate'}
             </Button>
           </div>
         </form>
