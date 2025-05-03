@@ -90,8 +90,6 @@ function UploadForm({
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Set loading state to true before submitting
     setIsLoading(true);
 
     // Create a new FileList-like structure if we have an image
@@ -157,7 +155,7 @@ function UploadForm({
               }}
               ref={fileInputRef}
             />
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading || !input.trim()}>
               {loading ? 'Generating...' : 'Generate'}
             </Button>
           </div>
