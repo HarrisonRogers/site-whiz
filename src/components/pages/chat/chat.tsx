@@ -3,8 +3,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Output from './output';
 import UploadForm from './uploadForm';
-import { OpenAI } from 'openai';
 import { cn } from '@/lib/utils';
+import { UIMessage } from 'ai';
+
 type Role = 'user' | 'assistant';
 
 export type Message = {
@@ -13,9 +14,7 @@ export type Message = {
 };
 
 function Chat() {
-  const [messages, setMessages] = useState<OpenAI.ChatCompletionMessageParam[]>(
-    []
-  );
+  const [messages, setMessages] = useState<UIMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,6 +22,8 @@ function Chat() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   });
+
+  console.log(messages);
 
   return (
     <section
@@ -44,15 +45,14 @@ function Chat() {
             messages={messages}
             ref={messagesEndRef}
             isLoading={isLoading}
-            errorMessage={errorMessage}
           />
         )}
+        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
         {/* Input */}
         <UploadForm
           messages={messages}
           setMessages={setMessages}
           setIsLoading={setIsLoading}
-          isLoading={isLoading}
           setErrorMessage={setErrorMessage}
         />
       </div>

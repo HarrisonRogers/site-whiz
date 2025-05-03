@@ -1,109 +1,48 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '../../ui/card';
 import { Textarea } from '../../ui/textarea';
 import { Button } from '../../ui/button';
-import analyze from '@/data/api/analyze';
-import { OpenAI } from 'openai';
-import AddImageFileButton from './addImageFileButton';
 import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
 import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
-import chat from '@/data/api/chat';
 import { FaEdit } from 'react-icons/fa';
-
-const formSchema = z.object({
-  file: z
-    .instanceof(File)
-    .refine(
-      (f): f is File =>
-        f instanceof File &&
-        (f.type.startsWith('image/') || f.type === 'application/pdf'),
-      { message: 'File must be an image (JPEG, PNG, etc.) or a PDF' }
-    )
-    .optional(),
-  message: z.string().min(1, { message: 'Message is required' }),
-});
-
-type formData = z.infer<typeof formSchema>;
+import { useChat } from '@ai-sdk/react';
+import { UIMessage } from 'ai';
+import AddImageFileButton from './addImageFileButton';
 
 type UploadFormProps = {
-  messages: OpenAI.ChatCompletionMessageParam[];
-  setMessages: React.Dispatch<
-    React.SetStateAction<OpenAI.ChatCompletionMessageParam[]>
-  >;
+  messages: UIMessage[];
+  setMessages: React.Dispatch<React.SetStateAction<UIMessage[]>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
-  isLoading: boolean;
 };
 
 function UploadForm({
-  messages,
+  messages: initialMessages,
   setMessages,
   setIsLoading,
   setErrorMessage,
   className,
-  isLoading,
 }: UploadFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const form = useForm<formData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      file: undefined,
-      message: '',
-    },
-  });
-
   const {
+    messages,
+    input,
+    handleInputChange,
     handleSubmit,
-    setValue,
-    watch,
-    formState: { isSubmitting, isValid },
-  } = form;
-
-  const message = watch('message');
-  useAutoResizeTextArea(textAreaRef.current, message || '');
-
-  // set loading state to true when form is submitting
-  useEffect(() => {
-    setIsLoading(isSubmitting);
-  }, [isSubmitting, setIsLoading]);
-
-  const onSubmit = async (data: formData) => {
-    try {
-      const userMessage: OpenAI.ChatCompletionUserMessageParam = {
-        role: 'user',
-        content: data.message || '',
-      };
-
-      // First update the UI with the new message
-      setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
-        ...prev,
-        userMessage,
-      ]);
-
-      const updatedMessages = [...messages, userMessage];
-      const response = data.file
-        ? await analyze(data.file || undefined, updatedMessages)
-        : await chat(updatedMessages);
-
-      if (response.content) {
-        setMessages((prev: OpenAI.ChatCompletionMessageParam[]) => [
-          ...prev,
-          { role: 'assistant', content: response.content },
-        ]);
-      }
-      setIsLoading(false);
-      setValue('message', '');
-    } catch (error) {
+    setMessages: setChatMessages,
+    isLoading: chatIsLoading,
+  } = useChat({
+    api: '/api/vercel-chat',
+    initialMessages,
+    onError: (error) => {
       console.error(error);
       setErrorMessage(
         error instanceof Error
@@ -111,30 +50,45 @@ function UploadForm({
           : 'An error occurred, Please try again later'
       );
       setIsLoading(false);
-    }
-  };
+    },
+    onFinish: () => {
+      setIsLoading(false);
+      setImageFile(undefined);
+      setPreview(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    },
+  });
+
+  useEffect(() => {
+    // Update the parent component's messages state when local messages change
+    setMessages(messages);
+  }, [messages, setMessages]);
+
+  // Use auto-resize for textarea
+  useAutoResizeTextArea(textAreaRef.current, input || '');
 
   const handleCloseImage = () => {
     setPreview(null);
-    form.setValue('file', undefined as unknown as File);
+    setImageFile(undefined);
     // Reset the file input element
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(file);
-        setPreview(imageUrl);
-      } else {
-        setPreview(null);
-      }
-      form.setValue('file', file);
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(chatIsLoading);
+
+    // Create a new FileList-like structure if we have an image
+    if (imageFile) {
+      handleSubmit(e, {
+        experimental_attachments: imageFile,
+      });
     } else {
-      setPreview(null);
+      handleSubmit(e);
     }
   };
 
@@ -145,9 +99,12 @@ function UploadForm({
         className
       )}
     >
-      {messages.length > 1 && !isLoading && (
+      {messages.length > 1 && !chatIsLoading && (
         <Button
-          onClick={() => setMessages([])}
+          onClick={() => {
+            setChatMessages([]);
+            setMessages([]);
+          }}
           variant="default"
           className="self-center mt-5 mb-0 sticky"
         >
@@ -161,7 +118,7 @@ function UploadForm({
           className
         )}
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleFormSubmit}>
           {preview && (
             <CardImage preview={preview} onClose={handleCloseImage} />
           )}
@@ -170,22 +127,26 @@ function UploadForm({
               id="message"
               placeholder="Enter your message here..."
               rows={1}
-              {...form.register('message')}
-              ref={(e) => {
-                form.register('message').ref(e);
-                textAreaRef.current = e;
-              }}
+              value={input}
+              onChange={handleInputChange}
+              ref={textAreaRef}
               className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 border-none min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none px-0"
             />
           </div>
           <div className="flex justify-between mt-3">
             <AddImageFileButton
-              register={form.register}
-              handleFileChange={handleFileChange}
+              handleFileChange={(event) => {
+                const files = event.target.files;
+
+                if (files) {
+                  setImageFile(files);
+                  setPreview(URL.createObjectURL(files[0]));
+                }
+              }}
               ref={fileInputRef}
             />
-            <Button type="submit" disabled={!isValid || isSubmitting}>
-              {isSubmitting ? 'Generating...' : 'Generate'}
+            <Button type="submit" disabled={chatIsLoading}>
+              {chatIsLoading ? 'Generating...' : 'Generate'}
             </Button>
           </div>
         </form>

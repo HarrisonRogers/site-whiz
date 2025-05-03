@@ -23,7 +23,7 @@ const items = [
   },
   {
     title: 'Chats',
-    url: '/',
+    url: '/vercel-chat',
   },
   {
     title: 'Settings',

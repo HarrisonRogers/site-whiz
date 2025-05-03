@@ -1,27 +1,23 @@
 import { forwardRef } from 'react';
-import OpenAI from 'openai';
 import { Markdown } from '@/lib/markdown';
 import { cn } from '@/lib/utils';
 import Spinner from '@/components/ui/spinner/spinner';
+import { UIMessage } from 'ai';
 
 type OutputProps = {
-  messages: OpenAI.ChatCompletionMessageParam[];
+  messages: UIMessage[];
   isLoading: boolean;
   className?: string;
-  errorMessage: string;
 };
 
 const Output = forwardRef<HTMLDivElement, OutputProps>(function Output(
-  { messages, isLoading, className, errorMessage },
+  { messages, isLoading, className },
   ref
 ) {
   return (
     <div
       className={cn('min-h-[20vh] overflow-y-auto flex flex-col', className)}
     >
-      <div className="mb-30 ml-25 mt-10 text-left">
-        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-      </div>
       {/* Output */}
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
