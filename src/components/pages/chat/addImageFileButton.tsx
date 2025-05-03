@@ -27,7 +27,7 @@ const AddImageFileButton = forwardRef<
             id="file"
             type="file"
             onChange={handleFileChange}
-            accept="image/png, image/jpeg"
+            accept="image/png, image/jpeg, image/webp"
             ref={ref}
           />
         </Label>
