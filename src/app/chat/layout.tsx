@@ -8,7 +8,7 @@ function ChatLayout({ children }: { children: React.ReactNode }) {
     <div>
       <SidebarProvider>
         <ChatSidebar />
-        <section className="w-full">
+        <section className="w-full h-screen">
           <SidebarTrigger className="sticky top-1 left-4 hover:bg-transparent" />
           {children}
         </section>

@@ -21,11 +21,16 @@ function Chat() {
   return (
     <section
       className={cn(
-        'flex flex-col items-center justify-center h-[90vh]',
+        'flex flex-col items-center justify-center h-[95vh]',
         messages.length > 0 && 'items-start justify-start'
       )}
     >
-      <div className="relative flex flex-col w-full h-full px-3 md:w-2/3 gap-4 mx-auto pb-40">
+      <div
+        className={cn(
+          'relative flex flex-col items-center justify-center w-full px-3 md:w-2/3 gap-4 mx-auto',
+          messages.length > 0 && 'pb-40'
+        )}
+      >
         {messages.length === 0 && (
           <h4 className="text-center text-base md:text-4xl">
             How can I help you today?

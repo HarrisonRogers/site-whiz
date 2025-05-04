@@ -11,12 +11,7 @@ type OutputProps = {
 
 const Output = ({ messages, isLoading, className }: OutputProps) => {
   return (
-    <div
-      className={cn(
-        'min-h-[20vh] max-h-[calc(90vh-150px)] overflow-y-auto flex flex-col',
-        className
-      )}
-    >
+    <div className={cn('min-h-[20vh] flex flex-col mb-30 w-full', className)}>
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
           if (message.role === 'assistant') {
