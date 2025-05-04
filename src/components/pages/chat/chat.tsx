@@ -25,7 +25,7 @@ function Chat() {
         messages.length > 0 && 'items-start justify-start'
       )}
     >
-      <div className="relative flex flex-col w-full px-3 md:w-2/3 gap-4 mx-auto">
+      <div className="relative flex flex-col w-full h-full px-3 md:w-2/3 gap-4 mx-auto pb-40">
         {messages.length === 0 && (
           <h4 className="text-center text-base md:text-4xl">
             How can I help you today?

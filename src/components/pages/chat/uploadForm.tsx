@@ -114,47 +114,19 @@ function UploadForm({
     const files = e.target.files;
 
     if (files) {
-      // Convert to a more compatible format if needed
-      const file = files[0];
-
-      // Create a new image from the file to normalize the format
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(img, 0, 0);
-          canvas.toBlob((blob) => {
-            if (blob) {
-              const normalizedFile = new File([blob], file.name, {
-                type: 'image/png',
-              });
-
-              // Create a new FileList-like object
-              const dataTransfer = new DataTransfer();
-              dataTransfer.items.add(normalizedFile);
-              const normalizedFileList = dataTransfer.files;
-
-              setImageFile(normalizedFileList);
-              setPreview(URL.createObjectURL(normalizedFile));
-            }
-          }, 'image/png');
-        }
-      };
-      img.src = URL.createObjectURL(file);
+      setImageFile(files);
+      setPreview(URL.createObjectURL(files[0]));
     }
   };
 
   return (
     <div
       className={cn(
-        'flex flex-col w-full md:w-3xl self-center gap-4 fixed bottom-4 p-4 ',
+        'flex flex-col w-full md:w-3xl self-center gap-4 bottom-4 p-4 bg-transparent',
         messages.length > 0 ? 'fixed' : 'relative'
       )}
     >
-      {messages.length > 2 && (
+      {messages.length > 1 && (
         <Button
           onClick={() => {
             setChatMessages([]);

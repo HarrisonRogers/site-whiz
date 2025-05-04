@@ -12,14 +12,17 @@ type OutputProps = {
 const Output = ({ messages, isLoading, className }: OutputProps) => {
   return (
     <div
-      className={cn('min-h-[20vh] overflow-y-auto flex flex-col', className)}
+      className={cn(
+        'min-h-[20vh] max-h-[calc(90vh-150px)] overflow-y-auto flex flex-col',
+        className
+      )}
     >
       {messages.map((message, index) => {
         if (typeof message.content === 'string') {
           if (message.role === 'assistant') {
             return (
               <div key={index} className="mb-3 text-left">
-                <div className="inline-block rounded-lg py-3 max-w-[80%]">
+                <div className="inline-block rounded-lg p-3 max-w-[80%]">
                   <Markdown>{message.content}</Markdown>
                 </div>
               </div>
