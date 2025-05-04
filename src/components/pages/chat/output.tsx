@@ -27,7 +27,7 @@ const Output = ({ messages, isLoading, className }: OutputProps) => {
           } else if (message.role === 'user') {
             return (
               <div key={index} className="mb-3 mt-10 text-right">
-                <div className="inline-block rounded-lg p-3 max-w-[70%] bg-neutral-200 dark:bg-neutral-700">
+                <div className="inline-block rounded-lg p-3 max-w-[70%] bg-neutral-300 dark:bg-neutral-700">
                   <Markdown>{message.content}</Markdown>
                 </div>
               </div>

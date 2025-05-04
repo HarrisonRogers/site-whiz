@@ -92,21 +92,66 @@ function UploadForm({
     e.preventDefault();
     setIsLoading(true);
 
-    // Create a new FileList-like structure if we have an image
-    if (imageFile) {
-      handleSubmit(e, {
-        experimental_attachments: imageFile,
-      });
-    } else {
-      handleSubmit(e);
+    try {
+      // Log the image file details for debugging
+      if (imageFile) {
+        handleSubmit(e, {
+          experimental_attachments: imageFile,
+        });
+      } else {
+        handleSubmit(e);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setErrorMessage(
+        error instanceof Error ? error.message : 'Unknown error occurred'
+      );
+      setIsLoading(false);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+
+    if (files) {
+      // Convert to a more compatible format if needed
+      const file = files[0];
+
+      // Create a new image from the file to normalize the format
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const normalizedFile = new File([blob], file.name, {
+                type: 'image/png',
+              });
+
+              // Create a new FileList-like object
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(normalizedFile);
+              const normalizedFileList = dataTransfer.files;
+
+              setImageFile(normalizedFileList);
+              setPreview(URL.createObjectURL(normalizedFile));
+            }
+          }, 'image/png');
+        }
+      };
+      img.src = URL.createObjectURL(file);
     }
   };
 
   return (
     <div
       className={cn(
-        'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-0 p-4 ',
-        className
+        'flex flex-col w-full md:w-3xl self-center gap-4 fixed bottom-4 p-4 ',
+        messages.length > 0 ? 'fixed' : 'relative'
       )}
     >
       {messages.length > 2 && (
@@ -146,14 +191,7 @@ function UploadForm({
           <div className="flex justify-between mt-3">
             <AddImageFileButton
               disabled={(imageFile && imageFile.length > 0) || false}
-              handleFileChange={(event) => {
-                const files = event.target.files;
-
-                if (files) {
-                  setImageFile(files);
-                  setPreview(URL.createObjectURL(files[0]));
-                }
-              }}
+              handleFileChange={handleFileChange}
               ref={fileInputRef}
             />
             <Button type="submit" disabled={loading || !input.trim()}>
