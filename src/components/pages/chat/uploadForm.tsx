@@ -21,7 +21,7 @@ type UploadFormProps = {
 };
 
 function UploadForm({
-  messages: initialMessages,
+  messages: previousMessages,
   setMessages,
   setIsLoading,
   setErrorMessage,
@@ -41,7 +41,7 @@ function UploadForm({
     setMessages: setChatMessages,
   } = useChat({
     api: '/api/vercel-chat',
-    initialMessages,
+    initialMessages: previousMessages,
     onError: (error) => {
       console.error(error);
       setErrorMessage(
