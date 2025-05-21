@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
-import { Label } from '../../ui/label';
-import { Button } from '../../ui/button';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { FaPlus } from 'react-icons/fa';
-import { Input } from '../../ui/input';
-import Tooltip from '../../ui/tooltip/tooltip';
+import { Input } from '@/components/ui/input';
+import { Tooltip } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 type AddImageFileButtonProps = {
@@ -22,6 +22,7 @@ const AddImageFileButton = forwardRef<
       }
     >
       <Button
+        type="button"
         asChild
         className={cn(
           'rounded-full p-3 dark:border-neutral-300 border-neutral-700 bg-transparent hover:bg-transparent hover:opacity-80 transition-opacity',

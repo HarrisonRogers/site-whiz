@@ -21,26 +21,6 @@ const items = [
     title: 'New chat',
     url: '/',
   },
-  {
-    title: 'Chats',
-    url: '/vercel-chat',
-  },
-  {
-    title: 'Settings',
-    url: '/',
-  },
-  {
-    title: 'Help',
-    url: '/',
-  },
-  {
-    title: 'About',
-    url: '/',
-  },
-  {
-    title: 'Logout',
-    url: '/',
-  },
 ];
 
 export default function ChatSidebar() {

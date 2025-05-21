@@ -40,7 +40,6 @@ function UploadForm({
     status,
     setMessages: setChatMessages,
   } = useChat({
-    api: '/api/vercel-chat',
     initialMessages: previousMessages,
     onError: (error) => {
       console.error(error);
@@ -50,13 +49,6 @@ function UploadForm({
           : 'An error occurred, Please try again later'
       );
       setIsLoading(false);
-    },
-    onFinish: () => {
-      setImageFile(undefined);
-      setPreview(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
     },
   });
 
@@ -126,19 +118,6 @@ function UploadForm({
         messages.length > 0 ? 'fixed' : 'relative'
       )}
     >
-      {messages.length > 1 && (
-        <Button
-          onClick={() => {
-            setChatMessages([]);
-            setMessages([]);
-          }}
-          variant="default"
-          className="self-center mt-5 mb-0 sticky"
-        >
-          New Chat <FaEdit />
-        </Button>
-      )}
-
       <Card
         className={cn(
           'flex flex-col w-full md:w-3xl self-center gap-4 sticky bottom-10 p-4 ',
@@ -161,13 +140,25 @@ function UploadForm({
             />
           </div>
           <div className="flex justify-between mt-3">
-            <AddImageFileButton
-              disabled={(imageFile && imageFile.length > 0) || false}
-              handleFileChange={handleFileChange}
-              ref={fileInputRef}
-            />
+            <div>
+              <AddImageFileButton
+                disabled={(imageFile && imageFile.length > 0) || false}
+                handleFileChange={handleFileChange}
+                ref={fileInputRef}
+              />
+              <Button
+                onClick={() => {
+                  setChatMessages([]);
+                  setMessages([]);
+                }}
+                variant="default"
+                className="ml-4"
+              >
+                New Chat <FaEdit />
+              </Button>
+            </div>
             <Button type="submit" disabled={loading || !input.trim()}>
-              {loading ? 'Generating...' : 'Generate'}
+              {loading ? 'Sending...' : 'Send'}
             </Button>
           </div>
         </form>
