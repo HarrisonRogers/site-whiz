@@ -1,12 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Tooltip } from '@/components/ui/tooltip';
-import { UIMessage } from 'ai';
+import { Message, UIMessage } from 'ai';
 import React from 'react';
-import { FaPlus } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 
 type NewChatProps = {
-  setChatMessages: React.Dispatch<React.SetStateAction<UIMessage[]>>;
+  setChatMessages: (
+    messages: Message[] | ((messages: Message[]) => Message[])
+  ) => void;
   setMessages: React.Dispatch<React.SetStateAction<UIMessage[]>>;
   disabled: boolean;
 };
@@ -19,9 +21,7 @@ function NewChat({ setChatMessages, setMessages, disabled }: NewChatProps) {
 
   return (
     <Tooltip
-      toolTipContent={
-        disabled ? 'Only one image at a time' : 'Upload an image or PDF'
-      }
+      toolTipContent={disabled ? 'Wait till chat completes' : 'New chat'}
     >
       <Button
         type="button"
@@ -32,7 +32,7 @@ function NewChat({ setChatMessages, setMessages, disabled }: NewChatProps) {
         variant="outline"
         onClick={handleNewChat}
       >
-        <FaPlus />
+        <FaEdit className="translate-x-0.5 -translate-y-[1px]" />
       </Button>
     </Tooltip>
   );

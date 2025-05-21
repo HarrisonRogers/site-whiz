@@ -7,10 +7,10 @@ import { Button } from '../../ui/button';
 import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
 import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
-import { FaEdit } from 'react-icons/fa';
 import { useChat } from '@ai-sdk/react';
 import { UIMessage } from 'ai';
 import AddImageFileButton from './addImageFileButton';
+import NewChat from './newChat';
 
 type UploadFormProps = {
   messages: UIMessage[];
@@ -140,22 +140,17 @@ function UploadForm({
             />
           </div>
           <div className="flex justify-between mt-3">
-            <div>
+            <div className="flex gap-2">
               <AddImageFileButton
                 disabled={(imageFile && imageFile.length > 0) || false}
                 handleFileChange={handleFileChange}
                 ref={fileInputRef}
               />
-              <Button
-                onClick={() => {
-                  setChatMessages([]);
-                  setMessages([]);
-                }}
-                variant="default"
-                className="ml-4"
-              >
-                New Chat <FaEdit />
-              </Button>
+              <NewChat
+                setChatMessages={setChatMessages}
+                setMessages={setMessages}
+                disabled={loading}
+              />
             </div>
             <Button type="submit" disabled={loading || !input.trim()}>
               {loading ? 'Sending...' : 'Send'}
