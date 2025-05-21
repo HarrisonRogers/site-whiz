@@ -1,4 +1,3 @@
-import { SquarePen } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -13,13 +12,24 @@ import Link from 'next/link';
 import Separator from '@/components/ui/separator';
 import Logo from '@/components/logo';
 import ThemeToggle from '@/components/theme/themeToggle';
-import Tooltip from '@/components/ui/tooltip/tooltip';
 
 // Menu items
 const items = [
   {
-    title: 'New chat',
-    url: '/',
+    title: 'About me?',
+    url: 'https://www.theharrisonrogers.com/',
+  },
+  {
+    title: 'Source code',
+    url: 'https://github.com/HarrisonRogers/site-whiz',
+  },
+  {
+    title: 'Vercel AI SDK',
+    url: 'https://ai-sdk.dev/docs/introduction',
+  },
+  {
+    title: 'Chat GPT vision feature',
+    url: 'https://platform.openai.com/docs/guides/images-vision?api-mode=chat',
   },
 ];
 
@@ -34,9 +44,6 @@ export default function ChatSidebar() {
             </Link>
             <div>
               <ThemeToggle />
-              <Tooltip toolTipContent="New chat">
-                <SquarePen className="size-4 cursor-pointer" />
-              </Tooltip>
             </div>
           </SidebarGroupLabel>
           <Separator className="mt-2 mb-4" />
@@ -48,7 +55,7 @@ export default function ChatSidebar() {
                   className="hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200"
                 >
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link href={item.url} target="_blank">
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
