@@ -1,16 +1,15 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Card } from '../../ui/card';
-import { Textarea } from '../../ui/textarea';
-import { Button } from '../../ui/button';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
-import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
 import { useChat } from '@ai-sdk/react';
 import { UIMessage } from 'ai';
 import AddImageFileButton from './addImageFileButton';
 import NewChat from './newChat';
+import { Input } from '@/components/ui/input';
 
 type UploadFormProps = {
   messages: UIMessage[];
@@ -30,7 +29,7 @@ function UploadForm({
   const [preview, setPreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     messages,
@@ -67,9 +66,6 @@ function UploadForm({
       setIsLoading(false);
     }
   }, [status, setIsLoading]);
-
-  // Use auto-resize for textarea
-  useAutoResizeTextArea(textAreaRef.current, input || '');
 
   const handleCloseImage = () => {
     setPreview(null);
@@ -129,13 +125,12 @@ function UploadForm({
             <CardImage preview={preview} onClose={handleCloseImage} />
           )}
           <div>
-            <Textarea
+            <Input
               id="message"
               placeholder="Enter your message here..."
-              rows={1}
               value={input}
               onChange={handleInputChange}
-              ref={textAreaRef}
+              ref={inputRef}
               className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 border-none min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none px-0"
             />
           </div>
