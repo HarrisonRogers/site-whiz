@@ -2,14 +2,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import CardImage from './cardImage';
+import useAutoResizeTextArea from '@/hooks/useAutoResizeTextArea';
 import { useChat } from '@ai-sdk/react';
 import { UIMessage } from 'ai';
 import AddImageFileButton from './addImageFileButton';
 import NewChat from './newChat';
-import { Input } from '@/components/ui/input';
 
 type UploadFormProps = {
   messages: UIMessage[];
@@ -29,7 +30,7 @@ function UploadForm({
   const [preview, setPreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     messages,
@@ -66,6 +67,9 @@ function UploadForm({
       setIsLoading(false);
     }
   }, [status, setIsLoading]);
+
+  // Use auto-resize for textarea
+  useAutoResizeTextArea(textAreaRef.current, input || '');
 
   const handleCloseImage = () => {
     setPreview(null);
@@ -107,6 +111,30 @@ function UploadForm({
     }
   };
 
+  // Handle keyboard shortcuts in textarea
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Check if Enter key is pressed without Shift
+    if (e.key === 'Enter' && !e.shiftKey) {
+      // Prevent the default behavior (adding a new line)
+      e.preventDefault();
+
+      // Only submit if there's text to send (same logic as the Submit button)
+      if (input.trim()) {
+        // Create a synthetic form event to trigger submission
+        const form = e.currentTarget.form;
+        if (form) {
+          const syntheticEvent = new Event('submit', {
+            bubbles: true,
+            cancelable: true,
+          });
+          form.dispatchEvent(syntheticEvent);
+        }
+      }
+    }
+    // If Shift + Enter, allow default behavior (new line)
+    // No need to handle this case explicitly - it's the default behavior
+  };
+
   return (
     <div
       className={cn(
@@ -125,13 +153,15 @@ function UploadForm({
             <CardImage preview={preview} onClose={handleCloseImage} />
           )}
           <div>
-            <Input
+            <Textarea
               id="message"
               placeholder="Enter your message here..."
+              rows={1}
               value={input}
               onChange={handleInputChange}
-              ref={inputRef}
-              className="bg-transparent active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 border-none min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none px-0"
+              ref={textAreaRef}
+              className="bg-transparent md:text-md active:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 border-none min-h-8 md:min-h-10 max-h-52 overflow-auto resize-none px-0"
+              onKeyDown={handleKeyDown}
             />
           </div>
           <div className="flex justify-between mt-3">
