@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Tooltip } from '@/components/ui/tooltip';
 import { Message, UIMessage } from 'ai';
 import React from 'react';
-import { FaEdit } from 'react-icons/fa';
+import { SquarePen } from 'lucide-react';
 
 type NewChatProps = {
   setChatMessages: (
@@ -25,6 +25,7 @@ function NewChat({ setChatMessages, setMessages, disabled }: NewChatProps) {
     >
       <Button
         type="button"
+        asChild
         className={cn(
           'rounded-full p-3 dark:border-neutral-300 border-neutral-700 bg-transparent hover:bg-transparent hover:opacity-80 transition-opacity',
           disabled && 'opacity-50 hover:cursor-not-allowed'
@@ -32,7 +33,9 @@ function NewChat({ setChatMessages, setMessages, disabled }: NewChatProps) {
         variant="outline"
         onClick={handleNewChat}
       >
-        <FaEdit className="translate-x-0.5 -translate-y-[1px]" />
+        <div>
+          <SquarePen />
+        </div>
       </Button>
     </Tooltip>
   );
