@@ -40,13 +40,14 @@ export async function signup(formData: FormData) {
   });
 
   if (error) {
-    console.error(error);
+  console.error(error);
   }
 
   if (data.user) {
-    console.log(data.user);
-  }
-
+  console.log(data.user);
   revalidatePath('/', 'layout');
   redirect('/chat');
+  }
+
+  return { error, data };
 }
