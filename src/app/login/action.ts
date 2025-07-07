@@ -8,28 +8,39 @@ import { createClient } from '@/utils/supabase/server';
 type FormData = {
   email: string;
   password: string;
+  displayName?: string;
 };
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword(formData);
+  const { error, data } = await supabase.auth.signInWithPassword(formData);
 
-  if (error) {
-    redirect('/error');
+  if (data.user) {
+    revalidatePath('/', 'layout');
+    redirect('/chat');
   }
 
-  revalidatePath('/', 'layout');
-  redirect('/');
+  return { error, data };
 }
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
 
-  const { error, data } = await supabase.auth.signUp(formData);
+  const { email, password, displayName } = formData;
+
+  const { error, data } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        display_name: displayName,
+      },
+    },
+  });
 
   if (error) {
-    redirect('/error');
+    console.error(error);
   }
 
   if (data.user) {
@@ -37,5 +48,5 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  redirect('/');
+  redirect('/chat');
 }

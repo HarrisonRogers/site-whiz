@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { login, signup } from '@/app/login/action';
@@ -19,6 +19,8 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 function LoginForm() {
+  const [error, setError] = useState('');
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,8 +35,11 @@ function LoginForm() {
     formState: { errors, isSubmitting },
   } = form;
 
-  const handleLoginSubmit = async (data: FormSchema) => {
-    await login(data);
+  const handleLoginSubmit = async (formData: FormSchema) => {
+    const { error } = await login(formData);
+    if (error) {
+      setError(error.message);
+    }
   };
 
   const handleSignupSubmit = async (data: FormSchema) => {
@@ -57,37 +62,49 @@ function LoginForm() {
         {/* Form Card */}
         <Card className="border p-6">
           <FormProvider {...form}>
-            <form className="space-y-6">
-              {/* Email Field */}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  {...register('email')}
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                    <span className="inline-block w-4 h-4 text-red-500">⚠</span>
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
+            <form className="space-y-2">
+              <div className="space-y-4">
+                {/* Email Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    {...register('email')}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                      <span className="inline-block w-4 h-4 text-red-500">
+                        ⚠
+                      </span>
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
 
-              {/* Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  {...register('password')}
-                />
-                {errors.password && (
+                {/* Password Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    {...register('password')}
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                      <span className="inline-block w-4 h-4 text-red-500">
+                        ⚠
+                      </span>
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+                {error && (
                   <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
                     <span className="inline-block w-4 h-4 text-red-500">⚠</span>
-                    {errors.password.message}
+                    {error}
                   </p>
                 )}
               </div>
