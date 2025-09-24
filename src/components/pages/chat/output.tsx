@@ -11,8 +11,6 @@ type OutputProps = {
 };
 
 const Output = ({ messages, isLoading, className }: OutputProps) => {
-  console.log(messages);
-
   return (
     <div className={cn('min-h-[20vh] flex flex-col mb-30 w-full', className)}>
       {messages.map((message, index) => {
