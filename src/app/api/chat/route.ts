@@ -1,5 +1,5 @@
 import { openai } from '@ai-sdk/openai';
-import { streamText, UIMessage } from 'ai';
+import { streamText, type UIMessage, convertToCoreMessages } from 'ai';
 
 export const maxDuration = 30;
 
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: openai('gpt-5-mini'),
-    messages,
+    messages: convertToCoreMessages(messages),
   });
 
   return result.toDataStreamResponse();

@@ -1,24 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Tooltip } from '@/components/ui/tooltip';
-import { Message, UIMessage } from 'ai';
 import React from 'react';
 import { SquarePen } from 'lucide-react';
 
 type NewChatProps = {
-  setChatMessages: (
-    messages: Message[] | ((messages: Message[]) => Message[])
-  ) => void;
-  setMessages: React.Dispatch<React.SetStateAction<UIMessage[]>>;
+  handleNewChat: () => void;
   disabled: boolean;
 };
 
-function NewChat({ setChatMessages, setMessages, disabled }: NewChatProps) {
-  const handleNewChat = () => {
-    setChatMessages([]);
-    setMessages([]);
-  };
-
+function NewChat({ handleNewChat, disabled }: NewChatProps) {
   return (
     <Tooltip
       toolTipContent={disabled ? 'Wait till chat completes' : 'New chat'}

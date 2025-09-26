@@ -42,7 +42,7 @@ function UploadForm({
   } = useChat({
     initialMessages: previousMessages,
     onError: (error) => {
-      console.error(error);
+      console.error('Error submitting form:', error);
       setErrorMessage(
         error instanceof Error
           ? error.message
@@ -135,6 +135,12 @@ function UploadForm({
     // No need to handle this case explicitly - it's the default behavior
   };
 
+  const handleNewChat = () => {
+    setChatMessages([]);
+    setMessages([]);
+    setErrorMessage('');
+  };
+
   return (
     <div
       className={cn(
@@ -171,11 +177,7 @@ function UploadForm({
                 handleFileChange={handleFileChange}
                 ref={fileInputRef}
               />
-              <NewChat
-                setChatMessages={setChatMessages}
-                setMessages={setMessages}
-                disabled={loading}
-              />
+              <NewChat disabled={loading} handleNewChat={handleNewChat} />
             </div>
             <Button type="submit" disabled={loading || !input.trim()}>
               {loading ? 'Sending...' : 'Send'}
